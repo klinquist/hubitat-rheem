@@ -201,12 +201,8 @@ def setWaterHeaterMode(waterheatermode) {
             log.debug "Setting away mode to false and waiting 15 seconds"
             parent.setAwayMode(false)
             pauseExecution(15000)
-        } else {
-            log.debug "Setting away mode to true and waiting 15 seconds"
-            parent.setAwayMode(true)
-            pauseExecution(15000)
         }
-        log.debug "Setting mode"
+        log.debug "Setting mode to ${waterheatermode}"
         publishWithRetry(["@MODE": translateWaterHeaterModeToEnum(waterheatermode)])
     }
     else
