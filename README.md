@@ -29,6 +29,7 @@ To connect to the API you will need to specify your Rheem EcoNet username and pa
 
 
 ## Revision History
+* 2022.11.24 - v1.0.3 - Accepted pr from @jrjohnson to fix driver namespace
 * 2022.11.00 - v1.0.2 - Fixed going into vacation mode (don't go into away mode prior to going into vacation)
 * 2022.11.20 - v1.0.1 - Fixed null pointer exception in translateThermostatMode (PR on original implementation from ljbotero).
 * 2022.11.19 - v1.0.0 - Forked by klinquist.  Added functions to put the location into home mode prior to taking it out of vacation mode.
