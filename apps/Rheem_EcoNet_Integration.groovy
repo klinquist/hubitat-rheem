@@ -181,7 +181,7 @@ def createChildDevices() {
         def device = getChildDevice("rheem:" + waterHeater)
         if (!device)
         {
-            device = addChildDevice("dcm.rheem", "Rheem Econet Water Heater", "rheem:" + waterHeater, 1234, ["name": state.deviceList[waterHeater], isComponent: false])
+            device = addChildDevice("klinquist.rheem", "Rheem Econet Water Heater", "rheem:" + waterHeater, 1234, ["name": state.deviceList[waterHeater], isComponent: false])
         }
         if (state.devicesModes == null)
             state.deviceModes = [:]
