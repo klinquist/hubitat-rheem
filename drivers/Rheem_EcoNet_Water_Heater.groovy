@@ -133,7 +133,8 @@ def parse(String message) {
         }
 
         if (payload."@RUNNING" != null) {
-            device.sendEvent(name: "thermostatOperatingState", value: payload."@RUNNING" == "Running" ? "heating" : "idle")    
+            def isRunning = payload."@RUNNING".toUpperCase().contains("RUNNING")
+            device.sendEvent(name: "thermostatOperatingState", value: isRunning ? "heating" : "idle")    
         }
     }
 }

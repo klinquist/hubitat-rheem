@@ -193,7 +193,8 @@ def createChildDevices() {
         device.updateDataValue("enabledDisabled", deviceDetails.enabledDisabled.toString())
         device.sendEvent(name: "heatingSetpoint", value: deviceDetails.setpoint, unit: "F")
         device.sendEvent(name: "thermostatSetpoint", value: deviceDetails.setpoint, unit: "F")
-        device.sendEvent(name: "thermostatOperatingState", value: deviceDetails.running == "Running" ? "heating" : "idle")
+        def isRunning = deviceDetails.running.toUpperCase().contains("RUNNING")
+        device.sendEvent(name: "thermostatOperatingState", value: isRunning ? "heating" : "idle")
         if (!deviceDetails.enabledDisabled) {    
             device.sendEvent(name: "waterHeaterMode", value: deviceDetails.currentMode)
         }
