@@ -3,8 +3,8 @@
 	"minimumHEVersion": "2.2.2",
 	"author": "Kris Linquist",
 	"version": "1.0.4",
-	"dateReleased": "2022-11-20",
-	"releaseNotes": "Added support for vacation mode for those water heaters that support it.",
+	"dateReleased": "2023-01-26",
+	"releaseNotes": "Fix for Rheem thermostatOperatingState not changing due to Rheem API change",
 	"documentationLink": "https://github.com/klinquist/hubitat-rheem/blob/main/README.md",
 	"communityLink": "https://community.hubitat.com/t/release-rheem-econet-integration/37338",
 	"apps" : [
