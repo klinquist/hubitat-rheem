@@ -204,7 +204,8 @@ def setWaterHeaterMode(waterheatermode) {
             pauseExecution(15000)
         }
         log.debug "Setting mode to ${waterheatermode}"
-        publishWithRetry(["@MODE": translateWaterHeaterModeToEnum(waterheatermode)])
+        def onOff = thermostatmode == "off" ? 0 : 1
+        publishWithRetry(["@ENABLED": onOff, "@MODE": translateWaterHeaterModeToEnum(waterheatermode)])
     }
     else
         log.error "setWaterHeaterMode called but not supported"
