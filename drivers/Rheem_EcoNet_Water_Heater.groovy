@@ -12,7 +12,7 @@ preferences {
 }
 
 metadata {
-    definition (name: "Rheem Econet Water Heater (New)", namespace: "klinquist.rheem", author: "kris@linquist.net") {
+    definition (name: "Rheem Econet Water Heater", namespace: "klinquist.rheem", author: "kris@linquist.net") {
         capability "Initialize"
         capability "Thermostat"
         capability "Actuator"
@@ -45,6 +45,14 @@ def installed() {
 
 def updated() {
     initialize()
+}
+
+def convertFtoC(temp) {
+    return Math.round((temp - 32) * 5 / 9).toInteger()
+}
+
+def convertCtoF(temp) {
+    return Math.round(temp * 9 / 5 + 32).toInteger()
 }
 
 def mqttConnectUntilSuccessful() {
@@ -115,7 +123,6 @@ def mqttClientStatus(String message) {
 
 def parse(String message) {
     def topic = interfaces.mqtt.parseMessage(message)
-    log.info topic
     def payload =  new JsonSlurper().parseText(topic.payload) 
 
     if ("rheem:" + payload?.device_name + ":" + payload?.serial_number == device.deviceNetworkId) {
@@ -123,10 +130,9 @@ def parse(String message) {
         if (payload."@SETPOINT" != null) {
             //Conver to Celcius if unit is "C"
             def setPointTemp = payload."@SETPOINT"
-            if (tempUnit=="C")
-                setPointTemp = (setPointTemp-32)*5/9
-                setPointTemp = Math.round(setPointTemp)
-                setPointTemp = setPointTemp.toInteger()
+            if (tempUnit=="C") {
+                setPointTemp = convertFtoC(setPointTemp)
+            }
             
             device.sendEvent(name: "heatingSetpoint", value: setPointTemp, unit: tempUnit)
             device.sendEvent(name: "thermostatSetpoint", value: setPointTemp, unit: tempUnit)
@@ -187,8 +193,9 @@ def setThermostatFanMode(fanmode) {
     
 def setHeatingSetpoint(temperature) {
     //Conver back to Farenhite if unit is "C"
-    if (tempUnit=="C")
-        temperature=(temperature*9/5)+32
+    if (tempUnit=="C"){
+        temperature=convertCtoF(temperature)
+    }
     
     def minTemp = new BigDecimal(device.getDataValue("minTemp"))
     def maxTemp = new BigDecimal(device.getDataValue("maxTemp"))

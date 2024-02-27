@@ -2,7 +2,7 @@
 	"packageName": "Rheem EcoNet Integration (maintained)",
 	"minimumHEVersion": "2.2.2",
 	"author": "Kris Linquist",
-	"version": "1.0.5",
+	"version": "1.0.6",
 	"dateReleased": "2024-02-08",
 	"releaseNotes": "Fix for Rheem thermostatOperatingState not changing due to Rheem API change",
 	"documentationLink": "https://github.com/klinquist/hubitat-rheem/blob/main/README.md",
