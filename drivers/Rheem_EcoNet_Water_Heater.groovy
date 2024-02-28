@@ -8,7 +8,7 @@
  */
 
 preferences {
-    input("tempUnit", "enum", options:["C", "F"], defaultValue:"C", title: "Unit", description: "The unit to use for temperature", required: true, displayDuringSetup: true)
+    input("tempUnit", "enum", options:["C", "F"], defaultValue:"F", title: "Unit", description: "The unit to use for temperature", required: true, displayDuringSetup: true)
 }
 
 metadata {
