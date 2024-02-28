@@ -3,9 +3,14 @@
  *
  *  Originally by Dominick Meglio
  *  Forked by Kris Linquist in 2022
+ *  Addition of Celcius by Sébastien Viel & Dimitri Viel in 2024
  *
  */
- 
+
+preferences {
+    input("tempUnit", "enum", options:["C", "F"], defaultValue:"F", title: "Unit", description: "The unit to use for temperature", required: true, displayDuringSetup: true)
+}
+
 metadata {
     definition (name: "Rheem Econet Water Heater", namespace: "klinquist.rheem", author: "kris@linquist.net") {
         capability "Initialize"
@@ -20,6 +25,8 @@ metadata {
         command "setWaterHeaterMode", [[name:"Mode*","type":"ENUM","description":"Mode","constraints":["Heat Pump", "Energy Saver", "High Demand", "Normal", "Vacation", "Off"]]]
         
         attribute "waterHeaterMode", "ENUM"
+        //attribute "waterHeaterMode", "ENUM", ["Heat Pump", "Energy Saver", "High Demand", "Normal", "Vacation", "Off"]
+        
     }
 }
 
@@ -38,6 +45,14 @@ def installed() {
 
 def updated() {
     initialize()
+}
+
+def convertFtoC(temp) {
+    return Math.round((temp - 32) * 5 / 9).toInteger()
+}
+
+def convertCtoF(temp) {
+    return Math.round(temp * 9 / 5 + 32).toInteger()
 }
 
 def mqttConnectUntilSuccessful() {
@@ -113,8 +128,15 @@ def parse(String message) {
     if ("rheem:" + payload?.device_name + ":" + payload?.serial_number == device.deviceNetworkId) {
         parent.logDebug "MQTT Message was: ${topic.payload}"
         if (payload."@SETPOINT" != null) {
-            device.sendEvent(name: "heatingSetpoint", value: payload."@SETPOINT", unit: "F")
-            device.sendEvent(name: "thermostatSetpoint", value: payload."@SETPOINT", unit: "F")
+            //Conver to Celcius if unit is "C"
+            def setPointTemp = payload."@SETPOINT"
+            if (tempUnit=="C") {
+                setPointTemp = convertFtoC(setPointTemp)
+            }
+            
+            device.sendEvent(name: "heatingSetpoint", value: setPointTemp, unit: tempUnit)
+            device.sendEvent(name: "thermostatSetpoint", value: setPointTemp, unit: tempUnit)
+            device.sendEvent(name: "unit", value: tempUnit)
         }
         if (device.getDataValue("enabledDisabled") == "true" && payload."@ACTIVE" != null) {
             def mode = payload."@ACTIVE" == true ? "heat" : "off"
@@ -170,6 +192,11 @@ def setThermostatFanMode(fanmode) {
 }
     
 def setHeatingSetpoint(temperature) {
+    //Conver back to Farenhite if unit is "C"
+    if (tempUnit=="C"){
+        temperature=convertCtoF(temperature)
+    }
+    
     def minTemp = new BigDecimal(device.getDataValue("minTemp"))
     def maxTemp = new BigDecimal(device.getDataValue("maxTemp"))
     if (temperature < minTemp)
@@ -177,6 +204,7 @@ def setHeatingSetpoint(temperature) {
     else if (temperature > maxTemp)
         temperature = maxTemp
 
+    
     publishWithRetry(["@SETPOINT": temperature])
 }
 
