@@ -29,7 +29,7 @@ To connect to the API you will need to specify your Rheem EcoNet username and pa
 
 
 ## Revision History
-* 2024.02.27 - v1.0.6 - Addition of Celcius by Sébastien Viel & Dimitri Viel
+* 2024.02.28 - v1.0.6 - Addition of Celcius by Sébastien Viel & Dimitri Viel
 * 2024.02.08 - v1.0.5 - Fix for returning from "off" mode.
 * 2023.01.26 - v1.0.4 - Fix for Rheem API returning "Compressor Running" instead of just "Running"
 * 2022.11.24 - v1.0.3 - Accepted pr from @jrjohnson to fix driver namespace
