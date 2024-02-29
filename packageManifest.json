@@ -4,7 +4,7 @@
 	"author": "Kris Linquist",
 	"version": "1.0.6",
 	"dateReleased": "2024-02-28",
-	"releaseNotes": "Fix for Rheem thermostatOperatingState not changing due to Rheem API change",
+	"releaseNotes": "Support for Celsius",
 	"documentationLink": "https://github.com/klinquist/hubitat-rheem/blob/main/README.md",
 	"communityLink": "https://community.hubitat.com/t/release-rheem-econet-integration/37338",
 	"apps" : [
